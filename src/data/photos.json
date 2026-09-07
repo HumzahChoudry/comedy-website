@@ -1,0 +1,23 @@
+[
+  {
+    "id": "photo-1",
+    "src": "/uploads/photos/placeholder-1.jpg",
+    "alt": "On stage at The Comedy Store",
+    "caption": "A great night at The Comedy Store",
+    "uploadedAt": "2026-03-01T00:00:00.000Z"
+  },
+  {
+    "id": "photo-2",
+    "src": "/uploads/photos/placeholder-2.jpg",
+    "alt": "Backstage before the show",
+    "caption": "Getting ready backstage",
+    "uploadedAt": "2026-02-15T00:00:00.000Z"
+  },
+  {
+    "id": "photo-3",
+    "src": "/uploads/photos/placeholder-3.jpg",
+    "alt": "Crowd shot from last tour",
+    "caption": "Amazing crowd energy on the last tour",
+    "uploadedAt": "2026-01-20T00:00:00.000Z"
+  }
+]

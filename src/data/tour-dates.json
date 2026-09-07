@@ -1,0 +1,47 @@
+[
+  {
+    "id": "tour-1",
+    "date": "2026-04-15",
+    "venue": "The Comedy Store",
+    "city": "Los Angeles, CA",
+    "ticketUrl": "https://tickets.example.com/show1",
+    "soldOut": false,
+    "notes": "Two shows — 7pm & 9pm"
+  },
+  {
+    "id": "tour-2",
+    "date": "2026-04-22",
+    "venue": "Laugh Factory",
+    "city": "Chicago, IL",
+    "ticketUrl": "https://tickets.example.com/show2",
+    "soldOut": false,
+    "notes": ""
+  },
+  {
+    "id": "tour-3",
+    "date": "2026-05-05",
+    "venue": "Caroline's on Broadway",
+    "city": "New York, NY",
+    "ticketUrl": "https://tickets.example.com/show3",
+    "soldOut": true,
+    "notes": "Sold out! Join waitlist."
+  },
+  {
+    "id": "tour-4",
+    "date": "2026-05-20",
+    "venue": "Improv Comedy Club",
+    "city": "Houston, TX",
+    "ticketUrl": "https://tickets.example.com/show4",
+    "soldOut": false,
+    "notes": ""
+  },
+  {
+    "id": "b0b08c68-bdc1-4d02-8360-bace4671aa04",
+    "date": "2026-09-08",
+    "venue": "New York Comedy Club",
+    "city": "New York, NY",
+    "ticketUrl": "https://newyorkcomedyclub.com/events/new-york-comedy-club-auditions-hosted-by-max-spinelli",
+    "soldOut": false,
+    "notes": ""
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "name": "Your Comedian Name",
+  "tagline": "Comedian | Storyteller | Entertainer",
+  "bio": "Welcome to my comedy world! I'm a stand-up comedian based in [City], known for my sharp wit, relatable storytelling, and unforgettable live shows. Whether it's a club gig or a sold-out theater, I bring the laughs every time.",
+  "heroHeading": "Laughs Guaranteed.",
+  "heroSubheading": "Stand-up comedy that hits different.",
+  "contactEmail": "youremail@example.com",
+  "socialLinks": {
+    "instagram": "https://instagram.com/yourhandle",
+    "twitter": "https://twitter.com/yourhandle",
+    "youtube": "https://youtube.com/@yourchannel",
+    "tiktok": "https://tiktok.com/@yourhandle",
+    "facebook": "https://facebook.com/yourpage"
+  },
+  "seoDescription": "Official website of [Your Name] - Stand-up comedian. Book tickets, watch videos, and get in touch.",
+  "footerText": "© 2026 Your Comedian Name. All rights reserved."
+}

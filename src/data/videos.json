@@ -1,0 +1,20 @@
+[
+  {
+    "id": "video-1",
+    "title": "Live at The Comedy Club",
+    "description": "Check out this clip from my recent show!",
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "thumbnailUrl": "",
+    "addedAt": "2026-03-01T00:00:00.000Z",
+    "featured": true
+  },
+  {
+    "id": "video-2",
+    "title": "Late Night Set Highlights",
+    "description": "Best moments from my late night appearance.",
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "thumbnailUrl": "",
+    "addedAt": "2026-02-10T00:00:00.000Z",
+    "featured": false
+  }
+]
