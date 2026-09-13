@@ -1,7 +1,9 @@
 import { getVideos, getYouTubeEmbedUrl, getYouTubeThumbnail } from "@/lib/data";
 
-export default function VideosPage() {
-  const videos = getVideos();
+export const dynamic = "force-dynamic";
+
+export default async function VideosPage() {
+  const videos = await getVideos();
   const featured = videos.filter((v) => v.featured);
   const rest = videos.filter((v) => !v.featured);
 

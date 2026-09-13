@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { getVideos, saveVideos } from "@/lib/data";
+import { Video } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { title, description, youtubeUrl, featured } = await req.json();
+  const { title, description, youtubeUrl, featured } =
+    (await req.json()) as Partial<Video>;
 
   if (!title || !youtubeUrl) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -23,8 +25,8 @@ export async function POST(req: NextRequest) {
     featured: !!featured,
   };
 
-  const videos = getVideos();
-  saveVideos([video, ...videos]);
+  const videos = await getVideos();
+  await saveVideos([video, ...videos]);
 
   return NextResponse.json({ video });
 }

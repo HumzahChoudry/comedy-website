@@ -1,8 +1,10 @@
 import { getPhotos } from "@/lib/data";
 import Image from "next/image";
 
-export default function PhotosPage() {
-  const photos = getPhotos();
+export const dynamic = "force-dynamic";
+
+export default async function PhotosPage() {
+  const photos = await getPhotos();
 
   return (
     <div className="pt-24 pb-20 px-4 min-h-screen bg-black">

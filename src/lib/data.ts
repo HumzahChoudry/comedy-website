@@ -1,53 +1,137 @@
-import fs from "fs";
-import path from "path";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { SiteConfig, Photo, Video, TourDate } from "@/types";
 
-const DATA_DIR = path.join(process.cwd(), "src", "data");
+// Default config used as a fallback when the DB row is missing.
+import defaultSiteConfig from "@/data/site-config.json";
 
-function readJSON<T>(filename: string): T {
-  const filePath = path.join(DATA_DIR, filename);
-  const raw = fs.readFileSync(filePath, "utf-8");
-  return JSON.parse(raw) as T;
+// -----------------------------------------------------------------------------
+// Storage layer backed by Cloudflare D1 (structured content) and R2 (images).
+// All functions are async because D1/R2 are async. Access to bindings goes
+// through getCloudflareContext(), which works in production and in local dev
+// (via initOpenNextCloudflareForDev() in next.config.ts + wrangler).
+// -----------------------------------------------------------------------------
+
+async function getDB() {
+  const { env } = await getCloudflareContext({ async: true });
+  return env.DB;
 }
 
-function writeJSON<T>(filename: string, data: T): void {
-  const filePath = path.join(DATA_DIR, filename);
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
+export async function getBucket() {
+  const { env } = await getCloudflareContext({ async: true });
+  return env.BUCKET;
 }
 
-export function getSiteConfig(): SiteConfig {
-  return readJSON<SiteConfig>("site-config.json");
+// ---- Site Config ------------------------------------------------------------
+
+export async function getSiteConfig(): Promise<SiteConfig> {
+  const db = await getDB();
+  const row = await db
+    .prepare("SELECT data FROM site_config WHERE id = 1")
+    .first<{ data: string }>();
+
+  if (!row) return defaultSiteConfig as SiteConfig;
+  return JSON.parse(row.data) as SiteConfig;
 }
 
-export function saveSiteConfig(config: SiteConfig): void {
-  writeJSON("site-config.json", config);
+export async function saveSiteConfig(config: SiteConfig): Promise<void> {
+  const db = await getDB();
+  await db
+    .prepare(
+      "INSERT INTO site_config (id, data) VALUES (1, ?1) " +
+        "ON CONFLICT(id) DO UPDATE SET data = ?1"
+    )
+    .bind(JSON.stringify(config))
+    .run();
 }
 
-export function getPhotos(): Photo[] {
-  return readJSON<Photo[]>("photos.json");
+// ---- Photos -----------------------------------------------------------------
+
+export async function getPhotos(): Promise<Photo[]> {
+  const db = await getDB();
+  const { results } = await db
+    .prepare(
+      "SELECT id, src, alt, caption, uploadedAt FROM photos ORDER BY uploadedAt DESC"
+    )
+    .all<Photo>();
+  return results ?? [];
 }
 
-export function savePhotos(photos: Photo[]): void {
-  writeJSON("photos.json", photos);
+export async function savePhotos(photos: Photo[]): Promise<void> {
+  // Replace the full set. Used by upload/delete flows.
+  const db = await getDB();
+  const statements = [db.prepare("DELETE FROM photos")];
+  for (const p of photos) {
+    statements.push(
+      db
+        .prepare(
+          "INSERT INTO photos (id, src, alt, caption, uploadedAt) VALUES (?, ?, ?, ?, ?)"
+        )
+        .bind(p.id, p.src, p.alt, p.caption, p.uploadedAt)
+    );
+  }
+  await db.batch(statements);
 }
 
-export function getVideos(): Video[] {
-  return readJSON<Video[]>("videos.json");
+// ---- Videos -----------------------------------------------------------------
+
+export async function getVideos(): Promise<Video[]> {
+  const db = await getDB();
+  const { results } = await db
+    .prepare(
+      "SELECT id, title, description, youtubeUrl, thumbnailUrl, addedAt, featured FROM videos ORDER BY addedAt DESC"
+    )
+    .all<Omit<Video, "featured"> & { featured: number }>();
+  return (results ?? []).map((v) => ({ ...v, featured: !!v.featured }));
 }
 
-export function saveVideos(videos: Video[]): void {
-  writeJSON("videos.json", videos);
+export async function saveVideos(videos: Video[]): Promise<void> {
+  const db = await getDB();
+  const statements = [db.prepare("DELETE FROM videos")];
+  for (const v of videos) {
+    statements.push(
+      db
+        .prepare(
+          "INSERT INTO videos (id, title, description, youtubeUrl, thumbnailUrl, addedAt, featured) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        )
+        .bind(
+          v.id,
+          v.title,
+          v.description,
+          v.youtubeUrl,
+          v.thumbnailUrl,
+          v.addedAt,
+          v.featured ? 1 : 0
+        )
+    );
+  }
+  await db.batch(statements);
 }
 
-export function getTourDates(): TourDate[] {
-  const dates = readJSON<TourDate[]>("tour-dates.json");
-  return dates.sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-  );
+// ---- Tour Dates -------------------------------------------------------------
+
+export async function getTourDates(): Promise<TourDate[]> {
+  const db = await getDB();
+  const { results } = await db
+    .prepare(
+      "SELECT id, date, venue, city, ticketUrl, soldOut, notes FROM tour_dates ORDER BY date ASC"
+    )
+    .all<Omit<TourDate, "soldOut"> & { soldOut: number }>();
+  return (results ?? []).map((d) => ({ ...d, soldOut: !!d.soldOut }));
 }
 
-export function saveTourDates(dates: TourDate[]): void {
-  writeJSON("tour-dates.json", dates);
+export async function saveTourDates(dates: TourDate[]): Promise<void> {
+  const db = await getDB();
+  const statements = [db.prepare("DELETE FROM tour_dates")];
+  for (const d of dates) {
+    statements.push(
+      db
+        .prepare(
+          "INSERT INTO tour_dates (id, date, venue, city, ticketUrl, soldOut, notes) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        )
+        .bind(d.id, d.date, d.venue, d.city, d.ticketUrl, d.soldOut ? 1 : 0, d.notes)
+    );
+  }
+  await db.batch(statements);
 }
 
 export function getYouTubeEmbedUrl(url: string): string {

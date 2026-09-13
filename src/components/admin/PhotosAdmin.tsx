@@ -36,7 +36,7 @@ export default function PhotosAdmin({ initialPhotos }: Props) {
     });
 
     if (res.ok) {
-      const data = await res.json();
+      const data = (await res.json()) as { photos: Photo[] };
       setPhotos((prev) => [...data.photos, ...prev]);
       setUploadMsg(`${data.photos.length} photo(s) uploaded successfully!`);
       if (fileRef.current) fileRef.current.value = "";

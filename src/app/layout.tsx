@@ -10,11 +10,16 @@ const geistSans = Geist({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const config = getSiteConfig();
-  return {
-    title: config.name,
-    description: config.seoDescription,
-  };
+  try {
+    const config = await getSiteConfig();
+    return {
+      title: config.name,
+      description: config.seoDescription,
+    };
+  } catch {
+    // D1 isn't available during build-time prerendering; fall back to defaults.
+    return { title: "Comedy Website" };
+  }
 }
 
 export default function RootLayout({

@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { getPhotos, savePhotos } from "@/lib/data";
+import { getPhotos, savePhotos, getBucket } from "@/lib/data";
 import { v4 as uuidv4 } from "uuid";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -20,25 +18,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No files provided" }, { status: 400 });
     }
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "photos");
-    await mkdir(uploadDir, { recursive: true });
-
-    const existingPhotos = getPhotos();
+    const bucket = await getBucket();
+    const existingPhotos = await getPhotos();
     const newPhotos = [];
 
     for (const file of files) {
       if (!file.type.startsWith("image/")) continue;
 
       const ext = file.name.split(".").pop() || "jpg";
-      const filename = `${uuidv4()}.${ext}`;
-      const filepath = path.join(uploadDir, filename);
+      const key = `photos/${uuidv4()}.${ext}`;
 
-      const buffer = Buffer.from(await file.arrayBuffer());
-      await writeFile(filepath, buffer);
+      // Store the image bytes in R2.
+      await bucket.put(key, await file.arrayBuffer(), {
+        httpMetadata: { contentType: file.type },
+      });
 
       newPhotos.push({
         id: uuidv4(),
-        src: `/uploads/photos/${filename}`,
+        // Served by the /img/[...key] route which streams from R2.
+        src: `/img/${key}`,
         alt: file.name.replace(/\.[^/.]+$/, ""),
         caption,
         uploadedAt: new Date().toISOString(),
@@ -46,7 +44,7 @@ export async function POST(req: NextRequest) {
     }
 
     const updatedPhotos = [...newPhotos, ...existingPhotos];
-    savePhotos(updatedPhotos);
+    await savePhotos(updatedPhotos);
 
     return NextResponse.json({ photos: newPhotos });
   } catch (err) {

@@ -112,7 +112,7 @@ function HeroImageField({
         body: formData,
       });
       if (res.ok) {
-        const data = await res.json();
+        const data = (await res.json()) as { src: string };
         setConfig((prev) => (prev ? { ...prev, heroImage: data.src } : prev));
       } else {
         setError("Upload failed. Please try again.");
@@ -199,7 +199,7 @@ export default function SettingsAdmin() {
   useEffect(() => {
     fetch("/api/admin/settings")
       .then((res) => res.json())
-      .then((data) => setConfig(data.config));
+      .then((data) => setConfig((data as { config: SiteConfig }).config));
   }, []);
 
   if (!config) return <div>Loading...</div>;

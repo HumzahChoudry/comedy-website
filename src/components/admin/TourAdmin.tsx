@@ -30,7 +30,7 @@ export default function TourAdmin({ initialDates }: { initialDates: TourDate[] }
     });
 
     if (res.ok) {
-      const data = await res.json();
+      const data = (await res.json()) as { tourDate: TourDate };
       setDates((prev) =>
         [...prev, data.tourDate].sort(
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()

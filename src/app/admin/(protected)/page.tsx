@@ -1,10 +1,10 @@
 import { getPhotos, getVideos, getTourDates } from "@/lib/data";
 import Link from "next/link";
 
-export default function AdminDashboard() {
-  const photos = getPhotos();
-  const videos = getVideos();
-  const tourDates = getTourDates();
+export default async function AdminDashboard() {
+  const photos = await getPhotos();
+  const videos = await getVideos();
+  const tourDates = await getTourDates();
   const upcoming = tourDates.filter((d) => new Date(d.date) >= new Date());
 
   const stats = [

@@ -1,10 +1,13 @@
 import { getSiteConfig, getVideos, getTourDates, getYouTubeEmbedUrl } from "@/lib/data";
 import Link from "next/link";
 
-export default function HomePage() {
-  const config = getSiteConfig();
-  const videos = getVideos().filter((v) => v.featured).slice(0, 1);
-  const upcomingShows = getTourDates()
+// Reads live data from D1 at request time.
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const config = await getSiteConfig();
+  const videos = (await getVideos()).filter((v) => v.featured).slice(0, 1);
+  const upcomingShows = (await getTourDates())
     .filter((d) => new Date(d.date) >= new Date())
     .slice(0, 3);
 

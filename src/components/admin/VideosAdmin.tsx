@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Video } from "@/types";
-import { getYouTubeThumbnail } from "@/lib/data";
 
 // Client-safe version of the thumbnail helper
 function getThumb(url: string): string {
@@ -34,7 +33,7 @@ export default function VideosAdmin({ initialVideos }: { initialVideos: Video[] 
     });
 
     if (res.ok) {
-      const data = await res.json();
+      const data = (await res.json()) as { video: Video };
       setVideos((prev) => [data.video, ...prev]);
       setForm({ title: "", description: "", youtubeUrl: "", featured: false });
       setMsg("Video added successfully!");

@@ -2,8 +2,8 @@ import { getSiteConfig } from "@/lib/data";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-export default function PublicLayout({ children }: { children: React.ReactNode }) {
-  const config = getSiteConfig();
+export default async function PublicLayout({ children }: { children: React.ReactNode }) {
+  const config = await getSiteConfig();
   return (
     <>
       <Navbar siteName={config.name} />

@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
+import { getBucket } from "@/lib/data";
 import { v4 as uuidv4 } from "uuid";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
 
-// Generic single-image upload. Saves the file to /public/uploads and returns
-// its public URL. Unlike the photos upload route, this does NOT add the image
-// to the photo gallery — useful for things like the hero background image.
+// Generic single-image upload. Stores the file in R2 and returns its public
+// URL (served by the /img/[...key] route). Unlike the photos upload route, this
+// does NOT add the image to the photo gallery — useful for the hero background.
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session) {
@@ -21,17 +20,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No valid image provided" }, { status: 400 });
     }
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
-
     const ext = file.name.split(".").pop() || "jpg";
-    const filename = `${uuidv4()}.${ext}`;
-    const filepath = path.join(uploadDir, filename);
+    const key = `misc/${uuidv4()}.${ext}`;
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(filepath, buffer);
+    const bucket = await getBucket();
+    await bucket.put(key, await file.arrayBuffer(), {
+      httpMetadata: { contentType: file.type },
+    });
 
-    return NextResponse.json({ src: `/uploads/${filename}` });
+    return NextResponse.json({ src: `/img/${key}` });
   } catch (err) {
     console.error("Image upload error:", err);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });

@@ -1,7 +1,10 @@
 import { getTourDates } from "@/lib/data";
+import { TourDate } from "@/types";
 
-export default function TourPage() {
-  const allDates = getTourDates();
+export const dynamic = "force-dynamic";
+
+export default async function TourPage() {
+  const allDates = await getTourDates();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -55,7 +58,7 @@ function ShowCard({
   show,
   isPast,
 }: {
-  show: ReturnType<typeof getTourDates>[0];
+  show: TourDate;
   isPast: boolean;
 }) {
   const dateObj = new Date(show.date);

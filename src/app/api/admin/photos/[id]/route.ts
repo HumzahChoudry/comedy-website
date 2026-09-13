@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { getPhotos, savePhotos } from "@/lib/data";
-import { unlink } from "fs/promises";
-import path from "path";
+import { getPhotos, savePhotos, getBucket } from "@/lib/data";
 
 export async function DELETE(
   req: NextRequest,
@@ -14,23 +12,27 @@ export async function DELETE(
   }
 
   const { id } = await params;
-  const photos = getPhotos();
+  const photos = await getPhotos();
   const photo = photos.find((p) => p.id === id);
 
   if (!photo) {
     return NextResponse.json({ error: "Photo not found" }, { status: 404 });
   }
 
-  // Delete file from disk
+  // Delete the object from R2. photo.src looks like "/img/photos/<uuid>.<ext>";
+  // strip the "/img/" prefix to get the R2 key.
   try {
-    const filepath = path.join(process.cwd(), "public", photo.src);
-    await unlink(filepath);
+    if (photo.src.startsWith("/img/")) {
+      const key = photo.src.slice("/img/".length);
+      const bucket = await getBucket();
+      await bucket.delete(key);
+    }
   } catch {
-    // File may not exist on disk, continue
+    // Object may not exist in R2, continue.
   }
 
   const updated = photos.filter((p) => p.id !== id);
-  savePhotos(updated);
+  await savePhotos(updated);
 
   return NextResponse.json({ success: true });
 }

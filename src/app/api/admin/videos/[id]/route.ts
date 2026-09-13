@@ -10,9 +10,9 @@ export async function DELETE(
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { id } = await params;
-  const videos = getVideos();
+  const videos = await getVideos();
   const updated = videos.filter((v) => v.id !== id);
-  saveVideos(updated);
+  await saveVideos(updated);
 
   return NextResponse.json({ success: true });
 }
@@ -25,10 +25,10 @@ export async function PATCH(
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { id } = await params;
-  const body = await req.json();
-  const videos = getVideos();
+  const body = (await req.json()) as Record<string, unknown>;
+  const videos = await getVideos();
   const updated = videos.map((v) => (v.id === id ? { ...v, ...body } : v));
-  saveVideos(updated);
+  await saveVideos(updated);
 
   return NextResponse.json({ success: true });
 }

@@ -1,8 +1,10 @@
 import { getSiteConfig } from "@/lib/data";
 import ContactForm from "@/components/ContactForm";
 
-export default function ContactPage() {
-  const config = getSiteConfig();
+export const dynamic = "force-dynamic";
+
+export default async function ContactPage() {
+  const config = await getSiteConfig();
 
   return (
     <div className="pt-24 pb-20 px-4 min-h-screen bg-black">

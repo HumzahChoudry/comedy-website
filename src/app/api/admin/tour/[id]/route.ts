@@ -10,8 +10,8 @@ export async function DELETE(
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { id } = await params;
-  const dates = getTourDates();
-  saveTourDates(dates.filter((d) => d.id !== id));
+  const dates = await getTourDates();
+  await saveTourDates(dates.filter((d) => d.id !== id));
 
   return NextResponse.json({ success: true });
 }
@@ -24,9 +24,9 @@ export async function PATCH(
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { id } = await params;
-  const body = await req.json();
-  const dates = getTourDates();
-  saveTourDates(dates.map((d) => (d.id === id ? { ...d, ...body } : d)));
+  const body = (await req.json()) as Record<string, unknown>;
+  const dates = await getTourDates();
+  await saveTourDates(dates.map((d) => (d.id === id ? { ...d, ...body } : d)));
 
   return NextResponse.json({ success: true });
 }
