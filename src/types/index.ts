@@ -4,6 +4,7 @@ export interface SiteConfig {
   bio: string;
   heroHeading: string;
   heroSubheading: string;
+  heroImage: string;
   contactEmail: string;
   socialLinks: {
     instagram: string;

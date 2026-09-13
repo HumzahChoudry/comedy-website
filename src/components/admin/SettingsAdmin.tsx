@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { SiteConfig } from "@/types";
 
 // NOTE: Field and SocialField are declared OUTSIDE the parent component.
@@ -85,6 +85,112 @@ function SocialField({
   );
 }
 
+function HeroImageField({
+  config,
+  setConfig,
+}: {
+  config: SiteConfig;
+  setConfig: React.Dispatch<React.SetStateAction<SiteConfig | null>>;
+}) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setError("");
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setConfig((prev) => (prev ? { ...prev, heroImage: data.src } : prev));
+      } else {
+        setError("Upload failed. Please try again.");
+      }
+    } catch {
+      setError("Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
+  return (
+    <div>
+      <label className="block text-sm text-gray-400 mb-1">
+        Hero Background Image
+      </label>
+      <p className="text-xs text-gray-500 mb-3">
+        Optional. Displayed behind the homepage hero text with a dark overlay.
+        Leave empty to use the default gradient background.
+      </p>
+
+      {/* Preview */}
+      {config.heroImage ? (
+        <div className="relative w-full h-40 rounded-lg overflow-hidden mb-3 border border-white/10">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={config.heroImage}
+            alt="Hero background preview"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40" />
+          <button
+            type="button"
+            onClick={() => setConfig((prev) => (prev ? { ...prev, heroImage: "" } : prev))}
+            className="absolute top-2 right-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold py-1 px-3 rounded-full transition-colors"
+          >
+            Remove
+          </button>
+        </div>
+      ) : (
+        <div className="w-full h-40 rounded-lg mb-3 border border-dashed border-white/15 flex items-center justify-center bg-zinc-800/50">
+          <span className="text-gray-600 text-sm">No hero image set</span>
+        </div>
+      )}
+
+      {/* Upload */}
+      <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          onChange={handleUpload}
+          disabled={uploading}
+          className="block text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-400 file:text-black hover:file:bg-yellow-300 cursor-pointer disabled:opacity-50"
+        />
+        {uploading && <span className="text-xs text-yellow-400">Uploading...</span>}
+      </div>
+
+      {/* Or paste a URL */}
+      <div className="mt-3">
+        <label className="block text-xs text-gray-500 mb-1">Or paste an image URL</label>
+        <input
+          type="text"
+          value={config.heroImage}
+          onChange={(e) =>
+            setConfig((prev) => (prev ? { ...prev, heroImage: e.target.value } : prev))
+          }
+          className="w-full bg-zinc-800 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-yellow-400 text-sm"
+          placeholder="https://... or /uploads/..."
+        />
+      </div>
+
+      {error && <p className="text-red-400 text-xs mt-2">{error}</p>}
+    </div>
+  );
+}
+
 export default function SettingsAdmin() {
   const [config, setConfig] = useState<SiteConfig | null>(null);
   const [saving, setSaving] = useState(false);
@@ -139,6 +245,7 @@ export default function SettingsAdmin() {
             <Field label="Hero Heading" field="heroHeading" placeholder="Laughs Guaranteed." config={config} setConfig={setConfig} />
             <Field label="Hero Subheading" field="heroSubheading" placeholder="Stand-up comedy that hits different." config={config} setConfig={setConfig} />
             <Field label="Bio / About Text" field="bio" placeholder="Your biography..." textarea config={config} setConfig={setConfig} />
+            <HeroImageField config={config} setConfig={setConfig} />
           </div>
         </div>
 

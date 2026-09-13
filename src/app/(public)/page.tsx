@@ -12,7 +12,18 @@ export default function HomePage() {
     <div className="pt-16">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center text-center px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
-        <div className="max-w-3xl mx-auto">
+        {/* Optional background image */}
+        {config.heroImage && (
+          <>
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${config.heroImage})` }}
+            />
+            {/* Dark overlay so text stays readable over the image */}
+            <div className="absolute inset-0 bg-black/60" />
+          </>
+        )}
+        <div className="relative max-w-3xl mx-auto">
           <p className="text-yellow-400 text-sm font-semibold uppercase tracking-[0.3em] mb-4">
             {config.tagline}
           </p>

@@ -1,23 +1,23 @@
 [
   {
-    "id": "photo-1",
-    "src": "/uploads/photos/placeholder-1.jpg",
-    "alt": "On stage at The Comedy Store",
-    "caption": "A great night at The Comedy Store",
-    "uploadedAt": "2026-03-01T00:00:00.000Z"
+    "id": "c4698e33-0171-4a32-92b4-d0f268108dae",
+    "src": "/uploads/photos/e3394e45-c449-45e7-a46f-af092b755e73.jpg",
+    "alt": "120-IMG_1052",
+    "caption": "Creators To Watch Set",
+    "uploadedAt": "2026-09-07T17:34:55.595Z"
   },
   {
-    "id": "photo-2",
-    "src": "/uploads/photos/placeholder-2.jpg",
-    "alt": "Backstage before the show",
-    "caption": "Getting ready backstage",
-    "uploadedAt": "2026-02-15T00:00:00.000Z"
+    "id": "3048d987-55a1-4c5f-a4c5-96fa2b58bb19",
+    "src": "/uploads/photos/93be89d1-8e83-4458-979b-e8340c82eb10.JPEG",
+    "alt": "Choudry,Humzah",
+    "caption": "Easy Lover Set",
+    "uploadedAt": "2026-09-07T17:34:20.102Z"
   },
   {
-    "id": "photo-3",
-    "src": "/uploads/photos/placeholder-3.jpg",
-    "alt": "Crowd shot from last tour",
-    "caption": "Amazing crowd energy on the last tour",
-    "uploadedAt": "2026-01-20T00:00:00.000Z"
+    "id": "1cd1cfe8-12a4-4a48-ad7b-7df1b1b2d77f",
+    "src": "/uploads/photos/f7fea610-5457-43d9-9cd9-e61399d7b292.png",
+    "alt": "Screenshot 2026-08-19 at 4.35.06 PM",
+    "caption": "sesh_comedy",
+    "uploadedAt": "2026-09-07T17:33:26.927Z"
   }
 ]
