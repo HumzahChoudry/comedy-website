@@ -1,5 +1,6 @@
 import { getSiteConfig, getVideos, getTourDates, getYouTubeEmbedUrl } from "@/lib/data";
 import Link from "next/link";
+import EmailSignupForm from "@/components/EmailSignupForm";
 
 // Reads live data from D1 at request time.
 export const dynamic = "force-dynamic";
@@ -59,8 +60,6 @@ export default async function HomePage() {
       {/* Bio Section */}
       <section className="py-24 px-4 bg-zinc-950">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-white mb-6">About</h2>
-          <div className="w-12 h-1 bg-[var(--accent)] mx-auto mb-8"></div>
           <p className="text-gray-300 text-lg leading-relaxed">{config.bio}</p>
           <Link href="/contact" className="inline-block mt-8 text-[var(--accent)] font-semibold hover:text-[var(--accent-hover)] transition-colors">
             Book Me →
@@ -68,34 +67,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Video */}
-      {videos.length > 0 && (
-        <section className="py-24 px-4 bg-black">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-white mb-2 text-center">Featured Video</h2>
-            <div className="w-12 h-1 bg-[var(--accent)] mx-auto mb-10"></div>
-            <div className="aspect-video rounded-xl overflow-hidden shadow-2xl">
-              <iframe
-                src={getYouTubeEmbedUrl(videos[0].youtubeUrl)}
-                title={videos[0].title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
-            <p className="text-center text-gray-400 mt-4">{videos[0].title}</p>
-          </div>
-          <div className="text-center mt-8">
-            <Link href="/videos" className="text-[var(--accent)] font-semibold hover:text-[var(--accent-hover)] transition-colors">
-              Watch More Videos →
-            </Link>
-          </div>
-        </section>
-      )}
-
       {/* Upcoming Shows Preview */}
       {upcomingShows.length > 0 && (
-        <section className="py-24 px-4 bg-zinc-950">
+        <section className="py-24 px-4 bg-black">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl font-bold text-white mb-2 text-center">Upcoming Shows</h2>
             <div className="w-12 h-1 bg-[var(--accent)] mx-auto mb-10"></div>
@@ -123,6 +97,45 @@ export default async function HomePage() {
             <div className="text-center mt-8">
               <Link href="/tour" className="text-[var(--accent)] font-semibold hover:text-[var(--accent-hover)] transition-colors">View All Tour Dates →</Link>
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* Email List Signup */}
+      <section className="py-24 px-4 bg-zinc-950">
+        <div className="max-w-xl mx-auto">
+          <h2 className="text-3xl font-bold text-white mb-2 text-center">
+            Sign Up for My Email List
+          </h2>
+          <div className="w-12 h-1 bg-[var(--accent)] mx-auto mb-6"></div>
+          <p className="text-gray-400 text-center mb-10">
+            Get show announcements and updates straight to your inbox.
+          </p>
+          <EmailSignupForm />
+        </div>
+      </section>
+
+      {/* Featured Video */}
+      {videos.length > 0 && (
+        <section className="py-24 px-4 bg-black">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-white mb-2 text-center">Featured Video</h2>
+            <div className="w-12 h-1 bg-[var(--accent)] mx-auto mb-10"></div>
+            <div className="aspect-video rounded-xl overflow-hidden shadow-2xl">
+              <iframe
+                src={getYouTubeEmbedUrl(videos[0].youtubeUrl)}
+                title={videos[0].title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              />
+            </div>
+            <p className="text-center text-gray-400 mt-4">{videos[0].title}</p>
+          </div>
+          <div className="text-center mt-8">
+            <Link href="/videos" className="text-[var(--accent)] font-semibold hover:text-[var(--accent-hover)] transition-colors">
+              Watch More Videos →
+            </Link>
           </div>
         </section>
       )}

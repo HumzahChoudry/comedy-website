@@ -8,4 +8,6 @@ interface CloudflareEnv {
   NEXTAUTH_SECRET: string;
   ADMIN_USERNAME: string;
   ADMIN_PASSWORD_HASH: string;
+  RESEND_API_KEY: string;
+  RESEND_FROM_EMAIL: string;
 }

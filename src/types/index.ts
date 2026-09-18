@@ -52,3 +52,11 @@ export interface TourDate {
   soldOut: boolean;
   notes: string;
 }
+
+export interface EmailSignup {
+  id: string;
+  email: string;
+  city: string;
+  state: string;
+  createdAt: string;
+}

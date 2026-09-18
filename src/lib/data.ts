@@ -1,5 +1,5 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { SiteConfig, Photo, Video, TourDate } from "@/types";
+import { SiteConfig, Photo, Video, TourDate, EmailSignup } from "@/types";
 
 // Default config used as a fallback when the DB row is missing.
 import defaultSiteConfig from "@/data/site-config.json";
@@ -143,6 +143,39 @@ export async function saveTourDates(dates: TourDate[]): Promise<void> {
     );
   }
   await db.batch(statements);
+}
+
+// ---- Email Signups ----------------------------------------------------------
+
+export async function getEmailSignups(): Promise<EmailSignup[]> {
+  const db = await getDB();
+  const { results } = await db
+    .prepare(
+      "SELECT id, email, city, state, createdAt FROM email_signups ORDER BY createdAt DESC"
+    )
+    .all<EmailSignup>();
+  return results ?? [];
+}
+
+/**
+ * Adds an email to the list. Returns true if inserted, false if the email was
+ * already subscribed (duplicate).
+ */
+export async function addEmailSignup(signup: EmailSignup): Promise<boolean> {
+  const db = await getDB();
+  const result = await db
+    .prepare(
+      "INSERT OR IGNORE INTO email_signups (id, email, city, state, createdAt) VALUES (?, ?, ?, ?, ?)"
+    )
+    .bind(signup.id, signup.email, signup.city, signup.state, signup.createdAt)
+    .run();
+  // D1 exposes affected row count via meta.changes.
+  return (result.meta?.changes ?? 0) > 0;
+}
+
+export async function deleteEmailSignup(id: string): Promise<void> {
+  const db = await getDB();
+  await db.prepare("DELETE FROM email_signups WHERE id = ?").bind(id).run();
 }
 
 export function getYouTubeEmbedUrl(url: string): string {
