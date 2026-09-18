@@ -21,7 +21,7 @@ export default function Navbar({ siteName }: { siteName: string }) {
           {/* Logo / Site Name */}
           <Link
             href="/"
-            className="text-xl font-bold tracking-tight text-white hover:text-yellow-400 transition-colors"
+            className="text-xl font-bold tracking-tight text-white hover:text-[var(--accent)] transition-colors"
           >
             {siteName}
           </Link>
@@ -32,7 +32,7 @@ export default function Navbar({ siteName }: { siteName: string }) {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-gray-300 hover:text-yellow-400 transition-colors uppercase tracking-wider"
+                className="text-sm font-medium text-gray-300 hover:text-[var(--accent)] transition-colors uppercase tracking-wider"
               >
                 {link.label}
               </Link>
@@ -78,7 +78,7 @@ export default function Navbar({ siteName }: { siteName: string }) {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-gray-300 hover:text-yellow-400 transition-colors uppercase tracking-wider"
+              className="text-sm font-medium text-gray-300 hover:text-[var(--accent)] transition-colors uppercase tracking-wider"
               onClick={() => setMenuOpen(false)}
             >
               {link.label}

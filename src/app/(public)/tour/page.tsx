@@ -15,12 +15,12 @@ export default async function TourPage() {
     <div className="pt-24 pb-20 px-4 min-h-screen bg-black">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-black text-white mb-2 text-center">Tour Dates</h1>
-        <div className="w-12 h-1 bg-yellow-400 mx-auto mb-12"></div>
+        <div className="w-12 h-1 bg-[var(--accent)] mx-auto mb-12"></div>
 
         {/* Upcoming Shows */}
         {upcoming.length > 0 ? (
           <div className="mb-16">
-            <h2 className="text-xl font-bold text-yellow-400 uppercase tracking-wider mb-6">
+            <h2 className="text-xl font-bold text-[var(--accent)] uppercase tracking-wider mb-6">
               Upcoming Shows
             </h2>
             <div className="flex flex-col gap-4">
@@ -70,7 +70,7 @@ function ShowCard({
     <div className="flex gap-5 items-start bg-zinc-900 rounded-xl p-5 border border-white/5">
       {/* Date Block */}
       <div className="flex-shrink-0 w-16 text-center">
-        <p className="text-yellow-400 font-black text-2xl leading-none">{day}</p>
+        <p className="text-[var(--accent)] font-black text-2xl leading-none">{day}</p>
         <p className="text-gray-400 text-xs uppercase mt-1">{month}</p>
         <p className="text-gray-600 text-xs">{year}</p>
       </div>
@@ -98,7 +98,7 @@ function ShowCard({
             href={show.ticketUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-yellow-400 text-black font-bold py-2 px-5 rounded-full text-sm hover:bg-yellow-300 transition-colors uppercase tracking-wider whitespace-nowrap"
+            className="bg-[var(--accent)] text-[var(--accent-text)] font-bold py-2 px-5 rounded-full text-sm hover:bg-[var(--accent-hover)] transition-colors uppercase tracking-wider whitespace-nowrap"
           >
             Tickets
           </a>

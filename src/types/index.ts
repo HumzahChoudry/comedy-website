@@ -15,6 +15,14 @@ export interface SiteConfig {
   };
   seoDescription: string;
   footerText: string;
+  theme: {
+    // Accent color used for buttons, links, and highlights (hex, e.g. "#facc15").
+    accentColor: string;
+    // Text color placed on top of the accent (e.g. buttons). "#000000" or "#ffffff".
+    accentTextColor: string;
+    // Page background color (hex, e.g. "#000000").
+    backgroundColor: string;
+  };
 }
 
 export interface Photo {

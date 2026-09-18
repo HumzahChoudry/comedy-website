@@ -14,5 +14,10 @@
     "facebook": "https://facebook.com/yourpage"
   },
   "seoDescription": "Official website of Humzah Choudry - Stand-up comedian. Book tickets, watch videos, and get in touch.",
-  "footerText": "© 2026 Humzah Choudry Enterprises. All rights reserved."
+  "footerText": "© 2026 Humzah Choudry Enterprises. All rights reserved.",
+  "theme": {
+    "accentColor": "#facc15",
+    "accentTextColor": "#000000",
+    "backgroundColor": "#000000"
+  }
 }

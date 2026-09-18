@@ -191,6 +191,44 @@ function HeroImageField({
   );
 }
 
+function ColorField({
+  label,
+  description,
+  value,
+  onChange,
+}: {
+  label: string;
+  description?: string;
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div>
+      <label className="block text-sm text-gray-400 mb-1">{label}</label>
+      {description && <p className="text-xs text-gray-500 mb-2">{description}</p>}
+      <div className="flex items-center gap-3">
+        <input
+          type="color"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="h-10 w-14 rounded-lg bg-zinc-800 border border-white/10 cursor-pointer p-1"
+        />
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-32 bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-yellow-400 text-sm font-mono"
+          placeholder="#000000"
+        />
+        <div
+          className="flex-1 h-10 rounded-lg border border-white/10"
+          style={{ backgroundColor: value }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function SettingsAdmin() {
   const [config, setConfig] = useState<SiteConfig | null>(null);
   const [saving, setSaving] = useState(false);
@@ -258,6 +296,68 @@ export default function SettingsAdmin() {
             <SocialField label="YouTube" field="youtube" config={config} setConfig={setConfig} />
             <SocialField label="TikTok" field="tiktok" config={config} setConfig={setConfig} />
             <SocialField label="Facebook" field="facebook" config={config} setConfig={setConfig} />
+          </div>
+        </div>
+
+        {/* Theme Colors */}
+        <div className="bg-zinc-900 rounded-xl p-6 border border-white/5">
+          <h3 className="text-lg font-semibold text-white mb-1">Theme Colors</h3>
+          <p className="text-xs text-gray-500 mb-4">
+            Customize the look of your public website. Changes apply after you save.
+          </p>
+          <div className="flex flex-col gap-5">
+            <ColorField
+              label="Accent Color"
+              description="Buttons, links, and highlights across the site."
+              value={config.theme.accentColor}
+              onChange={(v) =>
+                setConfig((prev) =>
+                  prev ? { ...prev, theme: { ...prev.theme, accentColor: v } } : prev
+                )
+              }
+            />
+            <ColorField
+              label="Accent Text Color"
+              description="Text placed on top of accent-colored buttons (usually black or white)."
+              value={config.theme.accentTextColor}
+              onChange={(v) =>
+                setConfig((prev) =>
+                  prev ? { ...prev, theme: { ...prev.theme, accentTextColor: v } } : prev
+                )
+              }
+            />
+            <ColorField
+              label="Background Color"
+              description="The page background color."
+              value={config.theme.backgroundColor}
+              onChange={(v) =>
+                setConfig((prev) =>
+                  prev ? { ...prev, theme: { ...prev.theme, backgroundColor: v } } : prev
+                )
+              }
+            />
+          </div>
+          {/* Live preview */}
+          <div className="mt-6">
+            <p className="text-xs text-gray-500 mb-2">Preview</p>
+            <div
+              className="rounded-xl p-6 border border-white/10 flex flex-col items-center gap-3"
+              style={{ backgroundColor: config.theme.backgroundColor }}
+            >
+              <span style={{ color: config.theme.accentColor }} className="font-bold uppercase tracking-widest text-sm">
+                Accent Heading
+              </span>
+              <button
+                type="button"
+                className="font-bold py-2 px-6 rounded-full text-sm uppercase tracking-wider"
+                style={{
+                  backgroundColor: config.theme.accentColor,
+                  color: config.theme.accentTextColor,
+                }}
+              >
+                Sample Button
+              </button>
+            </div>
           </div>
         </div>
 

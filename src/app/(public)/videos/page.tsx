@@ -11,7 +11,7 @@ export default async function VideosPage() {
     <div className="pt-24 pb-20 px-4 min-h-screen bg-black">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-black text-white mb-2 text-center">Videos</h1>
-        <div className="w-12 h-1 bg-yellow-400 mx-auto mb-12"></div>
+        <div className="w-12 h-1 bg-[var(--accent)] mx-auto mb-12"></div>
 
         {videos.length === 0 ? (
           <p className="text-center text-gray-500">No videos yet. Check back soon!</p>
@@ -20,7 +20,7 @@ export default async function VideosPage() {
             {/* Featured Videos */}
             {featured.length > 0 && (
               <div className="mb-16">
-                <h2 className="text-xl font-bold text-yellow-400 uppercase tracking-wider mb-6">
+                <h2 className="text-xl font-bold text-[var(--accent)] uppercase tracking-wider mb-6">
                   Featured
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -61,7 +61,7 @@ export default async function VideosPage() {
                         href={video.youtubeUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group block bg-zinc-900 rounded-xl overflow-hidden hover:ring-2 hover:ring-yellow-400 transition-all"
+                        className="group block bg-zinc-900 rounded-xl overflow-hidden hover:ring-2 hover:ring-[var(--accent)] transition-all"
                       >
                         {thumb && (
                           <div className="aspect-video relative overflow-hidden">

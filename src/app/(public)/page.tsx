@@ -27,7 +27,7 @@ export default async function HomePage() {
           </>
         )}
         <div className="relative max-w-3xl mx-auto">
-          <p className="text-yellow-400 text-sm font-semibold uppercase tracking-[0.3em] mb-4">
+          <p className="text-[var(--accent)] text-sm font-semibold uppercase tracking-[0.3em] mb-4">
             {config.tagline}
           </p>
           <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white mb-6 leading-none">
@@ -37,13 +37,13 @@ export default async function HomePage() {
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/tour"
-              className="bg-yellow-400 text-black font-bold py-3 px-8 rounded-full hover:bg-yellow-300 transition-colors text-sm uppercase tracking-wider"
+              className="bg-[var(--accent)] text-[var(--accent-text)] font-bold py-3 px-8 rounded-full hover:bg-[var(--accent-hover)] transition-colors text-sm uppercase tracking-wider"
             >
               Get Tickets
             </Link>
             <Link
               href="/videos"
-              className="border border-white/30 text-white font-semibold py-3 px-8 rounded-full hover:border-yellow-400 hover:text-yellow-400 transition-colors text-sm uppercase tracking-wider"
+              className="border border-white/30 text-white font-semibold py-3 px-8 rounded-full hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors text-sm uppercase tracking-wider"
             >
               Watch Videos
             </Link>
@@ -60,9 +60,9 @@ export default async function HomePage() {
       <section className="py-24 px-4 bg-zinc-950">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white mb-6">About</h2>
-          <div className="w-12 h-1 bg-yellow-400 mx-auto mb-8"></div>
+          <div className="w-12 h-1 bg-[var(--accent)] mx-auto mb-8"></div>
           <p className="text-gray-300 text-lg leading-relaxed">{config.bio}</p>
-          <Link href="/contact" className="inline-block mt-8 text-yellow-400 font-semibold hover:text-yellow-300 transition-colors">
+          <Link href="/contact" className="inline-block mt-8 text-[var(--accent)] font-semibold hover:text-[var(--accent-hover)] transition-colors">
             Book Me →
           </Link>
         </div>
@@ -73,7 +73,7 @@ export default async function HomePage() {
         <section className="py-24 px-4 bg-black">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-white mb-2 text-center">Featured Video</h2>
-            <div className="w-12 h-1 bg-yellow-400 mx-auto mb-10"></div>
+            <div className="w-12 h-1 bg-[var(--accent)] mx-auto mb-10"></div>
             <div className="aspect-video rounded-xl overflow-hidden shadow-2xl">
               <iframe
                 src={getYouTubeEmbedUrl(videos[0].youtubeUrl)}
@@ -86,7 +86,7 @@ export default async function HomePage() {
             <p className="text-center text-gray-400 mt-4">{videos[0].title}</p>
           </div>
           <div className="text-center mt-8">
-            <Link href="/videos" className="text-yellow-400 font-semibold hover:text-yellow-300 transition-colors">
+            <Link href="/videos" className="text-[var(--accent)] font-semibold hover:text-[var(--accent-hover)] transition-colors">
               Watch More Videos →
             </Link>
           </div>
@@ -98,12 +98,12 @@ export default async function HomePage() {
         <section className="py-24 px-4 bg-zinc-950">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl font-bold text-white mb-2 text-center">Upcoming Shows</h2>
-            <div className="w-12 h-1 bg-yellow-400 mx-auto mb-10"></div>
+            <div className="w-12 h-1 bg-[var(--accent)] mx-auto mb-10"></div>
             <div className="flex flex-col gap-4">
               {upcomingShows.map((show) => (
                 <div key={show.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-zinc-900 rounded-xl p-5 border border-white/5">
                   <div>
-                    <p className="text-yellow-400 font-mono text-sm">
+                    <p className="text-[var(--accent)] font-mono text-sm">
                       {new Date(show.date).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
                     </p>
                     <p className="text-white font-semibold text-lg mt-1">{show.venue}</p>
@@ -113,7 +113,7 @@ export default async function HomePage() {
                   {show.soldOut ? (
                     <span className="mt-3 sm:mt-0 px-4 py-2 text-xs font-bold uppercase bg-red-900/50 text-red-400 rounded-full">Sold Out</span>
                   ) : (
-                    <a href={show.ticketUrl} target="_blank" rel="noopener noreferrer" className="mt-3 sm:mt-0 bg-yellow-400 text-black font-bold py-2 px-6 rounded-full text-sm hover:bg-yellow-300 transition-colors uppercase tracking-wider">
+                    <a href={show.ticketUrl} target="_blank" rel="noopener noreferrer" className="mt-3 sm:mt-0 bg-[var(--accent)] text-[var(--accent-text)] font-bold py-2 px-6 rounded-full text-sm hover:bg-[var(--accent-hover)] transition-colors uppercase tracking-wider">
                       Tickets
                     </a>
                   )}
@@ -121,7 +121,7 @@ export default async function HomePage() {
               ))}
             </div>
             <div className="text-center mt-8">
-              <Link href="/tour" className="text-yellow-400 font-semibold hover:text-yellow-300 transition-colors">View All Tour Dates →</Link>
+              <Link href="/tour" className="text-[var(--accent)] font-semibold hover:text-[var(--accent-hover)] transition-colors">View All Tour Dates →</Link>
             </div>
           </div>
         </section>

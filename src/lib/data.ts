@@ -30,7 +30,18 @@ export async function getSiteConfig(): Promise<SiteConfig> {
     .first<{ data: string }>();
 
   if (!row) return defaultSiteConfig as SiteConfig;
-  return JSON.parse(row.data) as SiteConfig;
+
+  const stored = JSON.parse(row.data) as SiteConfig;
+  // Merge defaults so configs saved before newer fields (e.g. theme) were
+  // added still render correctly.
+  return {
+    ...(defaultSiteConfig as SiteConfig),
+    ...stored,
+    theme: {
+      ...(defaultSiteConfig as SiteConfig).theme,
+      ...stored.theme,
+    },
+  };
 }
 
 export async function saveSiteConfig(config: SiteConfig): Promise<void> {

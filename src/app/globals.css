@@ -3,6 +3,10 @@
 :root {
   --background: #000000;
   --foreground: #ffffff;
+  /* Theme accent (overridden at runtime by ThemeStyle from site config) */
+  --accent: #facc15;
+  --accent-hover: #eab308;
+  --accent-text: #000000;
 }
 
 @theme inline {

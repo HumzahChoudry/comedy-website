@@ -10,7 +10,7 @@ export default async function PhotosPage() {
     <div className="pt-24 pb-20 px-4 min-h-screen bg-black">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-black text-white mb-2 text-center">Photos</h1>
-        <div className="w-12 h-1 bg-yellow-400 mx-auto mb-12"></div>
+        <div className="w-12 h-1 bg-[var(--accent)] mx-auto mb-12"></div>
 
         {photos.length === 0 ? (
           <p className="text-center text-gray-500">No photos yet. Check back soon!</p>

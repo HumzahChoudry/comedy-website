@@ -39,7 +39,7 @@ export default function ContactForm({ email }: { email: string }) {
     <div className="max-w-xl mx-auto">
       <p className="text-gray-400 text-center mb-8">
         For bookings, press inquiries, or just to say hello, reach out below or email{" "}
-        <a href={`mailto:${email}`} className="text-yellow-400 hover:underline">
+        <a href={`mailto:${email}`} className="text-[var(--accent)] hover:underline">
           {email}
         </a>
         .
@@ -51,7 +51,7 @@ export default function ContactForm({ email }: { email: string }) {
           <p className="text-gray-400 text-sm mt-2">Thanks for reaching out. I&apos;ll get back to you soon.</p>
           <button
             onClick={() => setStatus("idle")}
-            className="mt-4 text-yellow-400 text-sm hover:underline"
+            className="mt-4 text-[var(--accent)] text-sm hover:underline"
           >
             Send another message
           </button>
@@ -69,7 +69,7 @@ export default function ContactForm({ email }: { email: string }) {
                 required
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-400 transition-colors"
+                className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[var(--accent)] transition-colors"
                 placeholder="Your name"
               />
             </div>
@@ -83,7 +83,7 @@ export default function ContactForm({ email }: { email: string }) {
                 required
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-400 transition-colors"
+                className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[var(--accent)] transition-colors"
                 placeholder="your@email.com"
               />
             </div>
@@ -98,7 +98,7 @@ export default function ContactForm({ email }: { email: string }) {
               type="text"
               value={form.subject}
               onChange={(e) => setForm({ ...form, subject: e.target.value })}
-              className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-400 transition-colors"
+              className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[var(--accent)] transition-colors"
               placeholder="Booking, press, or other"
             />
           </div>
@@ -113,7 +113,7 @@ export default function ContactForm({ email }: { email: string }) {
               rows={6}
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
-              className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-400 transition-colors resize-none"
+              className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[var(--accent)] transition-colors resize-none"
               placeholder="Tell me about your inquiry..."
             />
           </div>
@@ -127,7 +127,7 @@ export default function ContactForm({ email }: { email: string }) {
           <button
             type="submit"
             disabled={status === "loading"}
-            className="bg-yellow-400 text-black font-bold py-3 px-8 rounded-full hover:bg-yellow-300 transition-colors text-sm uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-[var(--accent)] text-[var(--accent-text)] font-bold py-3 px-8 rounded-full hover:bg-[var(--accent-hover)] transition-colors text-sm uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {status === "loading" ? "Sending..." : "Send Message"}
           </button>
