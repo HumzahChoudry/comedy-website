@@ -19,5 +19,12 @@
     "accentColor": "#facc15",
     "accentTextColor": "#000000",
     "backgroundColor": "#000000"
-  }
+  },
+  "sections": [
+    { "id": "hero", "visible": true },
+    { "id": "bio", "visible": true },
+    { "id": "tour", "visible": true },
+    { "id": "emailSignup", "visible": true },
+    { "id": "video", "visible": true }
+  ]
 }

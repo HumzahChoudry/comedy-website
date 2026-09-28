@@ -1,7 +1,16 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { SiteConfig } from "@/types";
+import { SiteConfig, HomeSectionId } from "@/types";
+
+// Human-friendly labels for each homepage section.
+const SECTION_LABELS: Record<HomeSectionId, string> = {
+  hero: "Hero (headline + buttons)",
+  bio: "Bio / About",
+  tour: "Upcoming Shows",
+  emailSignup: "Email List Signup",
+  video: "Featured Video",
+};
 
 // NOTE: Field and SocialField are declared OUTSIDE the parent component.
 // Declaring them inside SettingsAdmin caused React to treat them as a *new*
@@ -229,6 +238,95 @@ function ColorField({
   );
 }
 
+function SectionsField({
+  config,
+  setConfig,
+}: {
+  config: SiteConfig;
+  setConfig: React.Dispatch<React.SetStateAction<SiteConfig | null>>;
+}) {
+  const sections = config.sections;
+
+  const move = (index: number, dir: -1 | 1) => {
+    const target = index + dir;
+    if (target < 0 || target >= sections.length) return;
+    setConfig((prev) => {
+      if (!prev) return prev;
+      const next = [...prev.sections];
+      [next[index], next[target]] = [next[target], next[index]];
+      return { ...prev, sections: next };
+    });
+  };
+
+  const toggle = (index: number) => {
+    setConfig((prev) => {
+      if (!prev) return prev;
+      const next = prev.sections.map((s, i) =>
+        i === index ? { ...s, visible: !s.visible } : s
+      );
+      return { ...prev, sections: next };
+    });
+  };
+
+  return (
+    <div className="flex flex-col gap-2">
+      {sections.map((section, index) => (
+        <div
+          key={section.id}
+          className={`flex items-center gap-3 bg-zinc-800 rounded-lg px-4 py-3 border ${
+            section.visible ? "border-white/10" : "border-white/5 opacity-60"
+          }`}
+        >
+          {/* Reorder buttons */}
+          <div className="flex flex-col gap-0.5">
+            <button
+              type="button"
+              onClick={() => move(index, -1)}
+              disabled={index === 0}
+              className="text-gray-500 hover:text-white disabled:opacity-30 disabled:hover:text-gray-500"
+              title="Move up"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => move(index, 1)}
+              disabled={index === sections.length - 1}
+              className="text-gray-500 hover:text-white disabled:opacity-30 disabled:hover:text-gray-500"
+              title="Move down"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Order number + label */}
+          <span className="text-gray-500 text-xs font-mono w-5">{index + 1}</span>
+          <span className="text-white text-sm flex-1">
+            {SECTION_LABELS[section.id] ?? section.id}
+          </span>
+
+          {/* Visibility toggle */}
+          <label className="flex items-center gap-2 cursor-pointer select-none">
+            <span className="text-xs text-gray-400">
+              {section.visible ? "Visible" : "Hidden"}
+            </span>
+            <input
+              type="checkbox"
+              checked={section.visible}
+              onChange={() => toggle(index)}
+              className="w-4 h-4 accent-yellow-400"
+            />
+          </label>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function SettingsAdmin() {
   const [config, setConfig] = useState<SiteConfig | null>(null);
   const [saving, setSaving] = useState(false);
@@ -297,6 +395,16 @@ export default function SettingsAdmin() {
             <SocialField label="TikTok" field="tiktok" config={config} setConfig={setConfig} />
             <SocialField label="Facebook" field="facebook" config={config} setConfig={setConfig} />
           </div>
+        </div>
+
+        {/* Homepage Sections */}
+        <div className="bg-zinc-900 rounded-xl p-6 border border-white/5">
+          <h3 className="text-lg font-semibold text-white mb-1">Homepage Sections</h3>
+          <p className="text-xs text-gray-500 mb-4">
+            Reorder sections with the arrows and toggle each one on or off. The
+            order here controls the order they appear on your homepage.
+          </p>
+          <SectionsField config={config} setConfig={setConfig} />
         </div>
 
         {/* Theme Colors */}

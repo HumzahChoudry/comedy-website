@@ -23,6 +23,16 @@ export interface SiteConfig {
     // Page background color (hex, e.g. "#000000").
     backgroundColor: string;
   };
+  // Ordered list of homepage sections. Order controls display order; `visible`
+  // toggles whether each section renders.
+  sections: HomeSection[];
+}
+
+export type HomeSectionId = "hero" | "bio" | "tour" | "emailSignup" | "video";
+
+export interface HomeSection {
+  id: HomeSectionId;
+  visible: boolean;
 }
 
 export interface Photo {

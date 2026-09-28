@@ -32,16 +32,30 @@ export async function getSiteConfig(): Promise<SiteConfig> {
   if (!row) return defaultSiteConfig as SiteConfig;
 
   const stored = JSON.parse(row.data) as SiteConfig;
-  // Merge defaults so configs saved before newer fields (e.g. theme) were
-  // added still render correctly.
-  return {
-    ...(defaultSiteConfig as SiteConfig),
+  const defaults = defaultSiteConfig as SiteConfig;
+
+  // Merge defaults so configs saved before newer fields (e.g. theme, sections)
+  // were added still render correctly.
+  const merged: SiteConfig = {
+    ...defaults,
     ...stored,
     theme: {
-      ...(defaultSiteConfig as SiteConfig).theme,
+      ...defaults.theme,
       ...stored.theme,
     },
+    sections:
+      Array.isArray(stored.sections) && stored.sections.length > 0
+        ? stored.sections
+        : defaults.sections,
   };
+
+  // Ensure any newly-introduced section ids are appended so they're never lost.
+  const existingIds = new Set(merged.sections.map((s) => s.id));
+  for (const def of defaults.sections) {
+    if (!existingIds.has(def.id)) merged.sections.push(def);
+  }
+
+  return merged;
 }
 
 export async function saveSiteConfig(config: SiteConfig): Promise<void> {

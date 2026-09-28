@@ -1,0 +1,9 @@
+# Local development secrets for Cloudflare Workers (loaded by Wrangler/OpenNext).
+# This file is gitignored. Copy values here for local testing.
+
+# Resend — https://resend.com
+# Get an API key from the Resend dashboard.
+RESEND_API_KEY=
+# The "from" address. Use onboarding@resend.dev for quick testing, or a verified
+# address on your own domain (e.g. contact@yourdomain.com) for production.
+RESEND_FROM_EMAIL=onboarding@resend.dev
